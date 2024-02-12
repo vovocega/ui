@@ -180,6 +180,34 @@
 				}
 			}
 
+			@keyframes monitor_show
+			{
+				0%
+				{
+					top: -100%;
+				}
+				35%
+				{
+					top: -15%;
+				}
+				100%
+				{
+					top: -20%;
+				}
+			}
+
+			@keyframes monitor_hide
+			{
+				0%
+				{
+					top: -20%;
+				}
+				100%
+				{
+					top: -100%;
+				}
+			}
+
 			* 
 			{
 			    margin: 0;
@@ -193,6 +221,7 @@
 			    height: 100%;
 			    background: transparent;
 			    overflow: hidden;
+			    background-color: black;
 			}
 
 			.gauge-container
@@ -639,6 +668,46 @@
 				animation: attachment_hide 1s ease forwards;
 			}
 
+			.monitor
+			{
+				position: absolute;
+				left: 40px;
+				top: -100%;
+				width: 960px;
+				height: 818px;
+				background-image: url(img/monitor.png);
+				background-size: 100% 100%;
+			}
+
+			.monitor > .monitor-container
+			{
+				position: absolute;
+				top: 325px;
+				right: 55px;
+				bottom: 75px;
+				left: 55px;
+				border-radius: 10px;
+				background-color: #000;
+				overflow: hidden;
+			}
+
+				.monitor > .monitor-container > iframe
+				{
+					width: 100%;
+					height: 100%;
+				}
+
+			.monitor.is-visible
+			{
+				animation: monitor_show 1s ease forwards;
+				animation-delay: 0.5s;
+			}
+
+			.monitor.is-retracting
+			{
+				animation: monitor_hide 1s ease forwards;
+			}
+
 		</style>
 
 	</head>
@@ -664,6 +733,8 @@
 				</div>
 			</div>
 		</div>
+
+		<div id="monitor" class="monitor"></div>
 		
 	</body>
 
@@ -674,6 +745,7 @@
 		var gauge = document.querySelector('#gauge');
 		var gauge_attachment = document.querySelector('#gauge-attachment');
 		var gauge_container = document.querySelector('#gauge-container');
+		var monitor = document.querySelector('#monitor');
 
 		var timer_attachment1;
 		var timer_attachment2;
@@ -721,6 +793,21 @@
 				gauge.setAttribute('emoji', '');
 			}, 10000);
 
+		};
+
+		const show_monitor = function ()
+		{
+
+			var audio = new Audio(`mp3/gauge-activate.mp3`);
+			audio.play(); 
+
+			monitor.classList.add('is-visible');
+
+		};
+
+		const hide_monitor = function ()
+		{
+			monitor.classList.add('is-retracting');
 		};
 
 		const reset_gauge = function ()
@@ -825,6 +912,14 @@
 
 					play_attachment(command);
 
+				break;
+
+				case 'monitor-show':
+					show_monitor();
+				break;
+
+				case 'monitor-hide':
+					hide_monitor();
 				break;
 
 				case 'break':
