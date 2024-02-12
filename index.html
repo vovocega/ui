@@ -951,6 +951,11 @@
 
 					localStorage.setItem('last-rein-level', level);
 
+					if (command == 'rein3')
+					{
+						play_emoji('zany');
+					}
+
 					setTimeout(function()
 					{
 						var audio = new Audio(`mp3/rein-${level}.mp3`);
@@ -978,6 +983,11 @@
 					if (command == 'risitas')
 					{
 						play_emoji('laughing');
+					}
+
+					if (command == 'alborghetti')
+					{
+						play_emoji('zany');
 					}
 
 					play_attachment(command);
