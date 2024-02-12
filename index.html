@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Vovócega UI</title>
+
+		<style>
+
+			@keyframes blink_up
+			{
+				0%
+				{
+					opacity: 0;
+				}
+				20%
+				{
+					opacity: 1;
+				}
+				40%
+				{
+					opacity: 0;
+				}
+				60%
+				{
+					opacity: 1;
+				}
+				80%
+				{
+					opacity: 0;
+				}
+				100%
+				{
+					opacity: 1;
+				}
+			}
+
+			@keyframes blink_down
+			{
+				0%
+				{
+					opacity: 1;
+				}
+				100%
+				{
+					opacity: 0;
+				}
+			}
+
+			@keyframes shake 
+			{
+				0%, 100% { transform: translateX(0); }
+				10%, 30%, 50%, 70%, 90% { transform: translateX(-20px) rotate(-2deg); }
+				20%, 40%, 60%, 80% { transform: translateX(20px) rotate(2deg); }
+			}
+
+			@keyframes pointer_match_level_1_2
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -65deg);
+				}
+				40%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 20deg);
+				}
+				80%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -20deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+				}
+			}
+
+			@keyframes pointer_match_level_1_3
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -65deg);
+				}
+				40%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 85deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 65deg);
+				}
+			}
+
+			@keyframes pointer_match_level_2_1
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+				}
+				40%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -85deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -65deg);
+				}
+			}
+
+			@keyframes pointer_match_level_2_3
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+				}
+				20%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 90deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 65deg);
+				}
+			}
+
+			@keyframes pointer_match_level_3_1
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 65deg);
+				}
+				40%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -80deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -65deg);
+				}
+			}
+
+			@keyframes pointer_match_level_3_2
+			{
+				0%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 65deg);
+				}
+				20%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -20deg);
+				}
+				100%
+				{
+					transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+				}
+			}
+
+			@keyframes attachment_show
+			{
+				0%
+				{
+					transform: translateX(100%);
+				}
+				100%
+				{
+					transform: translateX(0%);
+				}
+			}
+
+			@keyframes attachment_hide
+			{
+				0%
+				{
+					transform: translateX(0%);
+				}
+				100%
+				{
+					transform: translateX(100%);
+				}
+			}
+
+			* 
+			{
+			    margin: 0;
+			    padding: 0;
+			    box-sizing: border-box;
+			}
+
+			body 
+			{
+			    width: 100%;
+			    height: 100%;
+			    background: transparent;
+			    overflow: hidden;
+			}
+
+			.gauge-container
+			{
+				position: absolute;
+				right: 40px;
+				bottom: 0px;
+			}
+
+				.gauge-container.shake
+				{
+					animation: shake 2s ease 5;
+					animation-delay: 2s;
+				}
+ 
+			.gauge 
+			{
+			    display: inline-block;
+			    width: 240px;
+			    height: 298px;
+			    background-size: 100% 100%;
+			    background-image: url(img/gauge.png);
+			    transform: translateY(10px);
+			    z-index: 10;
+			    filter: drop-shadow(0px 30px 10px rgba(0, 0, 0, 0.4));
+			}
+
+			.gauge[is-broken="1"]::after 
+			{
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    left: 0;
+			    height: 73.5%;
+			    content: ' ';
+			    background-image: url(img/gauge-broken.png);
+			    background-size: 100% 100%;
+			}
+
+			.gauge > .container 
+			{
+			    position: relative;
+			    width: 100%;
+			    height: 100%;
+			}
+
+			.gauge > .container > .match-meter 
+			{
+			    position: absolute;
+			    top: 0;
+			    right: 0;
+			    left: 0;
+			    height: 42%;
+			}
+
+				.gauge[last-match-level="1"] > .container > .match-meter > .level-1
+				{
+				    opacity: 1;
+				}
+
+				.gauge[last-match-level="2"] > .container > .match-meter > .level-2
+				{
+				    opacity: 1;
+				}
+
+				.gauge[last-match-level="3"] > .container > .match-meter > .level-3
+				{
+				    opacity: 1;
+				}
+
+				.gauge[last-match-level="1"][match-level="2"] > .container > .match-meter > .level-2
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 1.5s;
+				}
+
+					.gauge[last-match-level="1"][match-level="2"] > .container > .match-meter > .level-1
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="1"][match-level="2"] > .container > .match-meter > .level-3
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="1"][match-level="3"] > .container > .match-meter > .level-3
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 1.5s;
+				}
+
+					.gauge[last-match-level="1"][match-level="3"] > .container > .match-meter > .level-1
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="1"][match-level="3"] > .container > .match-meter > .level-2
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="2"][match-level="1"] > .container > .match-meter > .level-1
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 1.5s;
+				}
+
+					.gauge[last-match-level="2"][match-level="1"] > .container > .match-meter > .level-2
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="2"][match-level="1"] > .container > .match-meter > .level-3
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="2"][match-level="3"] > .container > .match-meter > .level-3
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 1s;
+				}
+
+					.gauge[last-match-level="2"][match-level="3"] > .container > .match-meter > .level-2
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="2"][match-level="3"] > .container > .match-meter > .level-1
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="3"][match-level="1"] > .container > .match-meter > .level-1
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 2s;
+				}
+
+					.gauge[last-match-level="3"][match-level="1"] > .container > .match-meter > .level-3
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="3"][match-level="1"] > .container > .match-meter > .level-2
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="3"][match-level="2"] > .container > .match-meter > .level-2
+				{
+				    animation: blink_up 1.5s forwards linear;
+				    animation-delay: 1.2s;
+				}
+
+					.gauge[last-match-level="3"][match-level="2"] > .container > .match-meter > .level-3
+					{
+					    animation: blink_down 0.5s forwards linear;
+					    animation-delay: 1s;
+					}
+
+					.gauge[last-match-level="3"][match-level="2"] > .container > .match-meter > .level-1
+					{
+					    opacity: 0;
+					}
+
+				.gauge[last-match-level="2"] > .container > .match-meter > .level-2
+				{
+				    opacity: 1;
+				}
+
+				.gauge[last-match-level="3"] > .container > .match-meter > .level-3
+				{
+				    opacity: 1;
+				}
+
+				.gauge[last-match-level=""] > .container > .match-meter > .level-2,
+				.gauge[match-level=""] > .container > .match-meter > .level-2
+				{
+					opacity: 1;
+				}
+
+			.gauge > .container > .match-meter > .level-1,
+			.gauge > .container > .match-meter > .level-2,
+			.gauge > .container > .match-meter > .level-3 
+			{
+			    position: absolute;
+			    background-size: 100% 100%;
+			    opacity: 0;
+			}
+
+			.gauge > .container > .match-meter > .level-1 
+			{
+			    left: 12.7%;
+			    bottom: -4%;
+			    width: 27.31%;
+			    height: 66%;
+			    background-image: url(img/match-1.png);
+			}
+
+			.gauge > .container > .match-meter > .level-2 
+			{
+			    left: 27.59%;
+			    bottom: 28.5%;
+			    width: 44.66%;
+			    height: 45%;
+			    background-image: url(img/match-2.png);
+			}
+
+			.gauge > .container > .match-meter > .level-3 
+			{
+			    right: 12.44%;
+			    bottom: -4%;
+			    width: 28.03%;
+			    height: 66%;
+			    background-image: url(img/match-3.png);
+			}
+
+			.gauge > .container > .pointer 
+			{
+			    position: absolute;
+			    left: 50%;
+			    top: 50%;
+			    transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+			    transform-origin: 50% 100%;
+			    width: 14.89%;
+			    height: 31.6%;
+			    background-size: 100% 100%;
+			    background-image: url(img/pointer.png);
+			}
+
+			.gauge[last-match-level="1"] > .container > .pointer 
+			{
+			   transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, -65deg);
+			}
+
+			.gauge[last-match-level="2"] > .container > .pointer 
+			{
+			   transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 0deg);
+			}
+
+			.gauge[last-match-level="3"] > .container > .pointer 
+			{
+			   transform: translateX(-50%) translateY(-130%) rotate3d(0, 0, 1, 65deg);
+			}
+
+			.gauge[last-match-level="1"][match-level="2"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_1_2 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge[last-match-level="1"][match-level="3"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_1_3 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge[last-match-level="2"][match-level="1"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_2_1 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge[last-match-level="2"][match-level="3"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_2_3 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge[last-match-level="3"][match-level="1"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_3_1 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge[last-match-level="3"][match-level="2"] > .container > .pointer 
+			{
+			    animation: pointer_match_level_3_2 5s forwards ease;
+			    animation-delay: 1s;
+			}
+
+			.gauge > .container > .avatar 
+			{
+			    position: absolute;
+			    left: 50%;
+			    top: 50%;
+			    transform: translate(-50%) translateY(-90%);
+			    width: 24.82%;
+			    height: 20%;
+			    background-size: 100% 100%;
+			    background-image: url(img/avatar.png);
+			}
+
+			.gauge[emoji="crying"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-crying.webp);
+			}
+
+			.gauge[emoji="laughing"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-laughing.webp);
+			}
+
+			.gauge[emoji="shit"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-shit.webp);
+			}
+
+			.gauge[emoji="sleeping"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-sleeping.webp);
+			}
+
+			.gauge[emoji="uff"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-uff.webp);
+			}
+
+			.gauge[emoji="yawning"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-yawning.webp);
+			}
+
+			.gauge > .container > .rein-meter 
+			{
+			    position: absolute;
+			    bottom: 0;
+			    right: 0;
+			    left: 0;
+			    height: 52%;
+			}
+
+				.gauge > .container > .rein-meter > .level-1,
+				.gauge > .container > .rein-meter > .level-2,
+				.gauge > .container > .rein-meter > .level-3 
+				{
+				    position: absolute;
+				    background-size: 100% 100%;
+				    width: 20%;
+				    padding-top: 20%;
+				    opacity: 0;
+				}
+
+				.gauge > .container > .rein-meter > .level-1 
+				{
+				    left: 22.9%;
+				    top: -0.4%;
+				    background-image: url(img/rein-1.png);
+				}
+
+				.gauge > .container > .rein-meter > .level-2
+				{
+				    left: 40%;
+				    top: 7.2%;
+				    background-image: url(img/rein-2.png);
+				}
+
+				.gauge > .container > .rein-meter > .level-3
+				{
+					right: 23%;
+					top: -0.4%;
+				    background-image: url(img/rein-3.png);
+				}
+
+				.gauge[last-rein-level="1"] > .container > .rein-meter > .level-1 
+				{
+				   opacity: 1;
+				}
+
+				.gauge[last-rein-level="2"] > .container > .rein-meter > .level-2
+				{
+				   opacity: 1;
+				}
+
+				.gauge[last-rein-level="3"] > .container > .rein-meter > .level-3
+				{
+				   opacity: 1;
+				}
+
+				.gauge[rein-level="1"] > .container > .rein-meter > .level-1 
+				{
+				   animation: blink_up 1.5s forwards linear;
+				   animation-delay: 0.5s;
+				}
+
+				.gauge[rein-level="2"] > .container > .rein-meter > .level-2
+				{
+				   animation: blink_up 1.5s forwards linear;
+				   animation-delay: 0.5s;
+				}
+
+				.gauge[rein-level="3"] > .container > .rein-meter > .level-3
+				{
+				   animation: blink_up 1.5s forwards linear;
+				   animation-delay: 0.5s;
+				}
+
+			.gauge-attachment
+			{
+				position: absolute;
+				left: -60%;
+				top: 25%;
+			    display: none;
+			    width: 180px;
+			    height: 122px;
+			    background-size: 100% 100%;
+			    background-image: url(img/gauge-attachment.png);
+			    z-index: -10;
+			    transform: translateX(100%);
+			    transition: all 0.5s;
+			    filter: drop-shadow(0px 30px 10px rgba(0, 0, 0, 0.4));
+			}
+
+				.gauge-attachment > .video-container
+				{
+					width: 84px;
+					height: 84px;
+					border-radius: 50%;
+					overflow: hidden;
+					margin: 19px;
+				}
+
+					.gauge-attachment > .video-container > video
+					{
+						width: 100%;
+						height: 100%;
+					}
+
+			.gauge-attachment.is-visible
+			{
+				animation: attachment_show 1s ease forwards;
+			    display: inline-block;
+			}
+
+			.gauge-attachment.is-retracting
+			{
+				animation: attachment_hide 1s ease forwards;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div id="gauge-container" class="gauge-container">
+			<div id="gauge-attachment" class="gauge-attachment"></div>
+			<div id="gauge" class="gauge gauge-broken" last-rein-level="" rein-level="" match-level="" last-match-level="" is-broken="">
+				<div class="container">
+					<div class="match-meter">
+						<div class="level-1"></div>
+						<div class="level-2"></div>
+						<div class="level-3"></div>
+					</div>
+					<div class="pointer"></div>
+					<div class="avatar"></div>
+					<div class="rein-meter">
+						<div class="level-1"></div>
+						<div class="level-2"></div>
+						<div class="level-3"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</body>
+
+	<script>
+
+		/* Copyright (C) 1899 Vovó Cega. All rights not reserved */
+
+		var gauge = document.querySelector('#gauge');
+		var gauge_attachment = document.querySelector('#gauge-attachment');
+		var gauge_container = document.querySelector('#gauge-container');
+
+		var timer_attachment1;
+		var timer_attachment2;
+
+		const play_attachment = function (command)
+		{
+
+			var audio = new Audio(`mp3/gauge-activate.mp3`);
+			audio.play();  
+ 
+			gauge_attachment.classList.add('is-visible', 1);
+			gauge_attachment.innerHTML = `<div class="video-container"><video src="mp4/${command}.mp4" autoplay muted loop></div>`;
+
+			if (timer_attachment1)
+			{
+				clearTimeout(timer_attachment1);
+			}
+
+			if (timer_attachment2)
+			{
+				clearTimeout(timer_attachment2);
+			}
+
+			timer_attachment1 = setTimeout(function()
+			{
+				gauge_attachment.classList.add('is-retracting');
+			}, 7000)
+
+			timer_attachment2 = setTimeout(function()
+			{
+				gauge_attachment.classList.remove('is-retracting');
+				gauge_attachment.classList.remove('is-visible');
+				gauge_attachment.innerHTML = ``;
+			}, 8000)
+
+		};
+
+		const play_emoji = function (command)
+		{
+
+			gauge.setAttribute('emoji', command);
+
+			setTimeout(function()
+			{
+				gauge.setAttribute('emoji', '');
+			}, 10000);
+
+		};
+
+		const reset_gauge = function ()
+		{
+
+			gauge.setAttribute('last-match-level', 2);
+			gauge.setAttribute('is-broken', 0);
+
+			gauge_attachment.classList.remove('is-visible');
+			gauge_attachment.classList.remove('is-retracting');
+			
+			localStorage.setItem('last-match-level', 2);
+			localStorage.removeItem('is-broken');
+
+		};
+
+		const execute = function (hash)
+		{
+
+			var command = hash.substr(1);
+			var last_match_level = localStorage.getItem('last-match-level');
+			var last_rein_level = localStorage.getItem('last_rein-level');
+
+			switch (command)
+			{
+				default:
+
+					console.warn(`Invalid command: ${command}`);
+
+				break;
+
+				case 'match1':
+				case 'match2':
+				case 'match3':
+
+					var level = command.charAt(command.length-1);
+
+					console.warn(`Setting match gauge to: ${level}`);
+
+					gauge.setAttribute('match-level', level);
+					gauge.setAttribute('last-match-level', last_match_level);
+
+					localStorage.setItem('last-match-level', level);
+
+					if (level == 3)
+					{
+						gauge_container.classList.add('shake');
+					}
+					else
+					{
+						gauge_container.classList.remove('shake');
+					}
+
+					setTimeout(function()
+					{
+						var audio = new Audio(`mp3/match-${level}.mp3`);
+						audio.play();
+					}, 800);
+					
+				break;
+
+				case 'rein1':
+				case 'rein2':
+				case 'rein3':
+
+					var level = command.charAt(command.length-1);
+
+					console.warn(`Setting rein gauge to: ${level}`);
+
+					gauge.setAttribute('rein-level', level);
+					gauge.setAttribute('last-rein-level', level);
+
+					localStorage.setItem('last-rein-level', level);
+
+					setTimeout(function()
+					{
+						var audio = new Audio(`mp3/rein-${level}.mp3`);
+						audio.play();
+					}, 800);
+					
+				break;
+
+				case 'laughing':
+				case 'crying':
+				case 'sleeping':
+				case 'shit':
+				case 'uff':
+				case 'yawning':
+
+					play_emoji(command);
+
+				break;
+
+				case 'attachment-risitas':
+				case 'attachment-alborghetti':
+				case 'attachment-machoman':
+
+					if (command == 'attachment-risitas')
+					{
+						play_emoji('laughing');
+					}
+
+					play_attachment(command);
+
+				break;
+
+				case 'break':
+
+					gauge.setAttribute('is-broken', 1);
+					localStorage.setItem('is-broken', 1);
+
+					var audio = new Audio('mp3/broken.mp3');
+					audio.play();
+
+				break;
+
+				case 'reset':
+
+					reset_gauge();
+
+				break;
+
+			}
+			
+		};
+
+		window.addEventListener('hashchange', function ()
+		{
+			execute(window.location.hash);
+		});
+
+		if (!localStorage.getItem('last-match-level'))
+		{
+			localStorage.setItem('last-match-level', 2);
+		}
+
+		if (localStorage.getItem('is-broken'))
+		{
+			gauge.setAttribute('is-broken', 1);
+		}
+
+		if (localStorage.getItem('last-match-level'))
+		{
+			gauge.setAttribute('match-level', localStorage.getItem('last-match-level'));
+			gauge.setAttribute('last-match-level', localStorage.getItem('last-match-level'));
+		}
+
+		if (localStorage.getItem('last-rein-level'))
+		{
+			gauge.setAttribute('last-rein-level', localStorage.getItem('last-rein-level'));
+		}
+
+		execute(window.location.hash);
+
+	</script>
+
+</html>
