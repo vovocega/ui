@@ -788,7 +788,7 @@
 			audio.play();  
  
 			gauge_attachment.classList.add('is-visible', 1);
-			gauge_attachment.innerHTML = `<div class="video-container"><video src="mp4/${command}.mp4" autoplay muted loop></div>`;
+			gauge_attachment.innerHTML = `<div class="video-container"><video src="mp4/attachment-${command}.mp4" autoplay muted loop></div>`;
 
 			if (timer_attachment1)
 			{
@@ -966,11 +966,11 @@
 
 				break;
 
-				case 'attachment-risitas':
-				case 'attachment-alborghetti':
-				case 'attachment-machoman':
+				case 'risitas':
+				case 'alborghetti':
+				case 'machoman':
 
-					if (command == 'attachment-risitas')
+					if (command == 'risitas')
 					{
 						play_emoji('laughing');
 					}
@@ -979,11 +979,11 @@
 
 				break;
 
-				case 'monitor-on':
+				case 'mon':
 					show_monitor();
 				break;
 
-				case 'monitor-off':
+				case 'moff':
 					hide_monitor();
 				break;
 
