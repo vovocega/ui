@@ -887,13 +887,27 @@
 		{
 
 			gauge.setAttribute('last-match-level', 2);
+			gauge.setAttribute('last-rein-level', 2);
 			gauge.setAttribute('is-broken', 0);
 
 			gauge_attachment.classList.remove('is-visible');
 			gauge_attachment.classList.remove('is-retracting');
 			
 			localStorage.setItem('last-match-level', 2);
+			localStorage.setItem('last-rein-level', '');
 			localStorage.removeItem('is-broken');
+
+		};
+
+		const reset_monitor = function ()
+		{
+
+			body.classList.remove('is-monitor-visible');
+			body.classList.remove('enable-overlay');
+
+			monitor.classList.remove('is-visible');
+			monitor.classList.remove('is-retracting');
+			localStorage.removeItem('is-monitor-visible');
 
 		};
 
@@ -1018,6 +1032,7 @@
 
 				case 'reset':
 
+					reset_monitor();
 					reset_gauge();
 
 				break;
