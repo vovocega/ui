@@ -686,7 +686,6 @@
 				background-color: rgba(0,0,0,0.8);
 				overflow: hidden;
 				z-index: 9;
-				animation: fade_in 1s ease-out forwards
 			}
 
 			.monitor
@@ -694,8 +693,8 @@
 				position: absolute;
 				left: 50%;
 				top: -200%;
-				width: 1280px;
-				height: 1091px;
+				width: 1440px;
+				height: 1227px;
 				transform: translateX(-50%);
 				background-image: url(img/monitor.png);
 				background-size: 100% 100%;
@@ -724,6 +723,12 @@
 			{
 				animation: monitor_show 1s ease forwards;
 				animation-delay: 0.5s;
+			}
+
+			body.is-monitor-visible .monitor
+			{
+				top: -20%;
+				filter: drop-shadow(0px 30px 10px rgba(0, 0, 0, 0.4));
 			}
 
 			.monitor.is-retracting
@@ -824,20 +829,31 @@
 		const show_monitor = function ()
 		{
 
-			var audio = new Audio(`mp3/gauge-activate.mp3`);
-			audio.play(); 
+			if (!body.classList.contains('is-monitor-visible'))
+			{
 
-			monitor.classList.add('is-visible');
-			body.classList.add('enable-overlay');
+				var audio = new Audio(`mp3/gauge-activate.mp3`);
+				audio.play(); 
 
-			console.warn('Monitor activated!');
+				monitor.classList.add('is-visible');
+				body.classList.add('enable-overlay');
+
+				setTimeout(function()
+				{
+					body.classList.add('is-monitor-visible');
+					localStorage.setItem('is-monitor-visible', 1);
+				}, 2000);
+
+				console.warn('Monitor activated!');
+
+			}
 
 		};
 
 		const hide_monitor = function ()
 		{
 
-			if (!monitor.classList.contains('is-visible'))
+			if (!body.classList.contains('is-monitor-visible'))
 			{
 				console.warn('Monitor not visible. Ignoring...');
 			}
@@ -845,12 +861,14 @@
 			{
 
 				monitor.classList.add('is-retracting');
+				body.classList.remove('is-monitor-visible');
 				body.classList.remove('enable-overlay');
 
 				setTimeout(function()
 				{
 					monitor.classList.remove('is-visible');
 					monitor.classList.remove('is-retracting');
+					localStorage.removeItem('is-monitor-visible');
 				}, 1000);
 
 			}
@@ -1013,6 +1031,12 @@
 		if (localStorage.getItem('last-rein-level'))
 		{
 			gauge.setAttribute('last-rein-level', localStorage.getItem('last-rein-level'));
+		}
+
+		if (localStorage.getItem('is-monitor-visible'))
+		{
+			body.classList.add('is-monitor-visible');
+			body.classList.add('enable-overlay');
 		}
 
 		execute(window.location.hash);
