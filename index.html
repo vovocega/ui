@@ -527,6 +527,7 @@
 			    height: 20%;
 			    background-size: 100% 100%;
 			    background-image: url(img/avatar.png);
+			    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.4));
 			}
 
 			.gauge[emoji="crying"] > .container > .avatar
@@ -539,6 +540,11 @@
 			    background-image: url(img/emoji-laughing.webp);
 			}
 
+			.gauge[emoji="hurt"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-hurt.webp);
+			}
+
 			.gauge[emoji="shit"] > .container > .avatar
 			{
 			    background-image: url(img/emoji-shit.webp);
@@ -547,6 +553,11 @@
 			.gauge[emoji="sleeping"] > .container > .avatar
 			{
 			    background-image: url(img/emoji-sleeping.webp);
+			}
+
+			.gauge[emoji="sunglasses"] > .container > .avatar
+			{
+			    background-image: url(img/emoji-sunglasses.webp);
 			}
 
 			.gauge[emoji="uff"] > .container > .avatar
@@ -784,6 +795,7 @@
 
 		var timer_attachment1;
 		var timer_attachment2;
+		var timer_emoji;
 
 		const play_attachment = function (command)
 		{
@@ -823,7 +835,12 @@
 
 			gauge.setAttribute('emoji', command);
 
-			setTimeout(function()
+			if (timer_emoji)
+			{
+				clearTimeout(timer_emoji);
+			}
+
+			timer_emoji = setTimeout(function()
 			{
 				gauge.setAttribute('emoji', '');
 			}, 10000);
@@ -968,6 +985,19 @@
 					if (command == 'rein3')
 					{
 						play_emoji('zany');
+						play_attachment('alborghetti');
+					}
+
+					if (command == 'rein2')
+					{
+						play_emoji('sunglasses');
+						play_attachment('machoman');
+					}
+
+					if (command == 'rein1')
+					{
+						play_emoji('hurt');
+						play_attachment('risitas');
 					}
 
 					setTimeout(function()
@@ -978,10 +1008,12 @@
 					
 				break;
 
-				case 'laughing':
 				case 'crying':
-				case 'sleeping':
+				case 'hurt':
+				case 'laughing':
 				case 'shit':
+				case 'sleeping':
+				case 'sunglasses':
 				case 'uff':
 				case 'yawning':
 				case 'zany':
