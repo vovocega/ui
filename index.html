@@ -691,18 +691,6 @@
 				animation: attachment_hide 1s ease forwards;
 			}
 
-			body.enable-overlay .fade-overlay
-			{
-				position: fixed;
-				left: 0;
-				right: 0;
-				top: 0;
-				bottom: 0;
-				background-color: rgba(0,0,0,0.8);
-				overflow: hidden;
-				z-index: 9;
-			}
-
 			.monitor
 			{
 				position: absolute;
@@ -740,15 +728,38 @@
 				animation-delay: 0.5s;
 			}
 
+			.monitor.is-retracting
+			{
+				animation: monitor_hide 1s ease forwards;
+			}
+
 			body.is-monitor-visible .monitor
 			{
 				top: -25%;
 				filter: drop-shadow(0px 30px 10px rgba(0, 0, 0, 0.4));
 			}
 
-			.monitor.is-retracting
+			body.is-monitor-visible .fade-overlay
 			{
-				animation: monitor_hide 1s ease forwards;
+				position: fixed;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				background-color: rgba(0,0,0,0.8);
+				overflow: hidden;
+				z-index: 9;
+				opacity: 0;
+			}
+
+			body.is-monitor-visible:not(.is-monitor-visible-saved) .fade-overlay
+			{
+				animation: fade_in 2s forwards;
+			}
+
+			body.is-monitor-visible.is-monitor-visible-saved .fade-overlay
+			{
+				opacity: 1;
 			}
 
 		</style>
@@ -857,7 +868,6 @@
 				audio.play(); 
 
 				monitor.classList.add('is-visible');
-				body.classList.add('enable-overlay');
 
 				setTimeout(function()
 				{
@@ -883,7 +893,7 @@
 
 				monitor.classList.add('is-retracting');
 				body.classList.remove('is-monitor-visible');
-				body.classList.remove('enable-overlay');
+				body.classList.remove('is-monitor-visible-saved');
 
 				setTimeout(function()
 				{
@@ -916,7 +926,6 @@
 		{
 
 			body.classList.remove('is-monitor-visible');
-			body.classList.remove('enable-overlay');
 
 			monitor.classList.remove('is-visible');
 			monitor.classList.remove('is-retracting');
@@ -1098,7 +1107,7 @@
 		if (localStorage.getItem('is-monitor-visible'))
 		{
 			body.classList.add('is-monitor-visible');
-			body.classList.add('enable-overlay');
+			body.classList.add('is-monitor-visible-saved');
 		}
 
 		execute(window.location.hash);
