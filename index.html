@@ -198,13 +198,9 @@
 				{
 					top: -200%;
 				}
-				35%
-				{
-					top: -15%;
-				}
 				100%
 				{
-					top: -20%;
+					top: 0%;
 				}
 			}
 
@@ -212,7 +208,7 @@
 			{
 				0%
 				{
-					top: -20%;
+					top: 0%;
 				}
 				100%
 				{
@@ -833,19 +829,30 @@
 			monitor.classList.add('is-visible');
 			body.classList.add('enable-overlay');
 
+			console.warn('Monitor activated!');
+
 		};
 
 		const hide_monitor = function ()
 		{
 
-			monitor.classList.add('is-retracting');
-			body.classList.remove('enable-overlay');
-
-			setTimeout(function()
+			if (!monitor.classList.contains('is-visible'))
 			{
-				monitor.classList.remove('is-visible');
-				monitor.classList.remove('is-retracting');
-			}, 1000);
+				console.warn('Monitor not visible. Ignoring...');
+			}
+			else
+			{
+
+				monitor.classList.add('is-retracting');
+				body.classList.remove('enable-overlay');
+
+				setTimeout(function()
+				{
+					monitor.classList.remove('is-visible');
+					monitor.classList.remove('is-retracting');
+				}, 1000);
+
+			}
 
 		};
 
