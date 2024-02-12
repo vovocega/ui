@@ -730,13 +730,13 @@
 
 			.monitor.is-retracting
 			{
-				animation: monitor_hide 1s ease forwards;
+				animation: monitor_hide 3s ease forwards;
+				animation-delay: 1s;
 			}
 
 			body.is-monitor-visible .monitor
 			{
 				top: -25%;
-				filter: drop-shadow(0px 30px 10px rgba(0, 0, 0, 0.4));
 			}
 
 			body.is-monitor-visible .fade-overlay
@@ -892,15 +892,15 @@
 			{
 
 				monitor.classList.add('is-retracting');
-				body.classList.remove('is-monitor-visible');
-				body.classList.remove('is-monitor-visible-saved');
 
 				setTimeout(function()
 				{
+					body.classList.remove('is-monitor-visible');
+					body.classList.remove('is-monitor-visible-saved');
 					monitor.classList.remove('is-visible');
 					monitor.classList.remove('is-retracting');
 					localStorage.removeItem('is-monitor-visible');
-				}, 1000);
+				}, 3000);
 
 			}
 
